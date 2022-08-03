@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include ('partials/head') %>
+  <body>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
+      <symbol id="check" viewBox="0 0 16 16">
+        <title>blog</title>
+        <path
+          d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"
+        />
+      </symbol>
+    </svg>
+
+    <form class="example" action="/readone" style="margin:auto;max-width:300px" method="post">
+      <input type="text" placeholder="Search.." name="searchField">
+      <button type="submit"><i class="fa fa-search">Search</i></button>
+    </form>
+
+    <div class="container py-3">
+      <%- include ('partials/header') %>
+
+      <main class="post">
+        <div class="container text-center">
+          <h1>view content</h1>
+          <% for( let i = 0; i < posts.length; i++ ) { %>
+            <%= posts[i].title %>
+            <%= posts[i].caption %>
+
+            <%= posts[i].content %>
+
+          
+          <% } %>
+          <p>
+            Using a series of utilities, you can create this jumbotron, just
+            like the one in previous versions of Bootstrap. Check out the
+            examples below for how you can remix and restyle it to your liking.
+            Using a series of utilities, you can create this jumbotron, just
+            like the one in previous versions of Bootstrap. Check out the
+            examples below for how you can remix and restyle it to your liking.
+          </p>
+         
+          <a class="btn btn-primary btn-lg" href="#" type="button">edit</a>
+          <a class="btn btn-danger btn-lg" href="#" type="button">delete</a>
+        </div>
+      </main>
+      <%- include ('partials/footer') %>
+    </div>
+  </body>
+</html>
+s

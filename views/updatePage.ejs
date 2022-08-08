@@ -14,11 +14,11 @@
     <div class="container py-3">
      <%- include ('partials/header') %> 
 
-      <form action="/post/store" method="post">
+      <form action="/update_id/<%= post._id %>" method="POST">
         <div>
           <div class="mb-3">
             <label for="title" class="form-label">title</label>
-            <input type="text" class="form-control" id="title" name="title" />
+            <input type="text" class="form-control" id="title" name="title" value="<%= post.title %> " />
           </div>
           <div class="mb-3">
             <label for="caption" class="form-label">caption</label>
@@ -27,6 +27,7 @@
               class="form-control"
               id="caption"
               name="caption"
+              value="<%= post.caption %>"
             />
           </div>
           <div class="mb-3">
@@ -36,7 +37,10 @@
               id="content"
               rows="3"
               name="content"
-            ></textarea>
+            >
+                <%= post.content %>
+        
+        </textarea>
           </div>
         </div>
         <button class="btn btn-lg btn-primary" type="submit">publish</button>

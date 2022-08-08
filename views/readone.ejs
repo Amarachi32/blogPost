@@ -20,12 +20,28 @@
           <h1><%= post.title %> </h1>
           <p><%= post.content %></p>
 
-          <a class="btn btn-primary btn-lg" href="#" type="button">edit</a>
-          <a class="btn btn-danger btn-lg" href="#" type="button">delete</a>
+          <a class="btn btn-primary btn-lg" href="/update_id/<%= post._id %>" type="button">update</a>
+          <a class="btn btn-danger btn-lg" id="delete" type="button" data-postid= "<%= post._id %>" >delete</a>
         </div>
       </main>
       <%- include ('partials/footer') %>
     </div>
+    <script>
+      const deletePost = document.querySelector('#delete')
+      const postId = deletePost.dataset.postid
+      console.log(postId)
+      deletePost.onclick = async function (){
+        // return console.log(this.dataset.id)
+        const request = await fetch(`/delete_post/${postId}`, {method:'DELETE'})
+      }
+        const response =await request.json()
+        if (request.status===true){
+          window.location.href = response.redirect
+        }else if(response.status===false){
+          alert('could not delete the post')
+        }
+
+    </script>
   </body>
 </html>
 s

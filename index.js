@@ -18,9 +18,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then((result) => {
-    app.listen(3000, () => {
-      console.log("server listening on port 3000 & mongodb connected");
-    });
+    console.log("mongodb connected");
   })
   .catch((error) => console.log("error"));
 // mongoose.connect("mongodb://localhost:27017/blogpost").then(
@@ -29,14 +27,26 @@ mongoose
 // err => { /** handle initial connection error */ }
 //   );
 
-app.get("/", async(req, res) => {
-    const posts = await post.find({}).sort({createdAt:-1})
-    .then((result)=>{
-  res.render("index", {posts:result});
-  console.log(result)
-
+app.get("/", async (req, res) => {
+  const posts = await post
+    .find({})
+    .sort({ createdAt: -1 })
+    .then((result) => {
+      res.render("index", { posts: result });
+      
     })
- .catch(error=>console.log('error'))
+    .catch((error) => console.log("error"));
+});
+// read more button
+app.get("/post/store/:id", async(req, res) => {
+  const id = req.params.id;
+  await post.findById(id)
+  .then((read) => {
+    res.render("readone", { post: read });
+    console.log(result)
+  })
+  .catch((error) => console.log("error"));
+
 });
 
 
@@ -45,22 +55,53 @@ app.get("/publish", (req, res) => {
   res.render("publish");
 });
 
-// to post blog to server through publish page
-app.post("/publish", async(req, res) => {
-    try {
-        const posts = await post.create(req.body)
-        res.redirect('/')
-    } catch (error) {
-        console.log(error)
-    }
+// to post blog to server through publish page "submit button"
+app.post("/post/store", async (req, res) => {
+  try {
+    const posts = await post.create(req.body);
+    res.redirect("/");
+  } catch (error) {
+    console.log(error);
+  }
 });
 
-app.get("/post/store/:id", (req, res) => {
-    const id = req.params.id
-    console.log(id)
-    post.findById({id})
-  res.render("readone", {post}); 
-});
+// update post with button update
+app.get('/update_id/:id', async(req,res)=>{
+  const id  = req.params.id
+  await post.findById(id).then(result=>{
+res.render('updatePage', {post: result})
+
+  }).catch((error)=>
+  console.log(error)
+  )
+})
+// event after filling a form then submit to take action
+app.post('/update_id/:id', async(req,res)=>{
+  const id = req.params.id;
+  await post.findByIdAndUpdate(id, req.body).then(result=>{
+    res.redirect("/")
+  }).catch((error)=>{
+    console.log(error)
+  })
+})
+
+
+// delete action
+app.delete('/delete_post/:id', async(req,res)=>{
+  const id = req.params.id
+  await post.findByIdAndDelete(id).then(result=>{
+    res.json({
+      status:true,
+      message:"post deleted", 
+      redirect:"/"
+    })
+  }).catch((error)=>{
+    res.json({
+      status:false,
+      message:"cannot delete"
+    })
+  })
+})
 
 
 app.get("/readall", async (req, res) => {
@@ -68,13 +109,13 @@ app.get("/readall", async (req, res) => {
   res.render("readall", { posts });
 });
 
-
 app.post("/readall/:human", async (req, res) => {
   const posts = await post.find({
     "&or": [{ title: { $regex: req.query.human } }],
   });
   res.render("readone", { posts });
 });
+
 // app.get('/readall', async(req,res)=>{
 //     const searchField = req.query.searchField
 //     const posts = await post.find({
@@ -87,7 +128,7 @@ app.post("/readall/:human", async (req, res) => {
 //     res.render('readall', {posts})
 
 //    })
-app.post("/", async (req, res) => {
-  const newPost = await post.create(req.body);
-  res.send(newPost);
+
+app.listen(port, () => {
+  console.log("server listening on port 3000");
 });

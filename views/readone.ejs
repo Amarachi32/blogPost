@@ -20,7 +20,7 @@
           <h1><%= post.title %> </h1>
           <p><%= post.content %></p>
 
-          <a class="btn btn-primary btn-lg" href="/update_id/<%= post._id %>" type="button">update</a>
+          <a class="btn btn-primary btn-lg" href="/posts/update_id/<%= post._id %>" type="button">update</a>
           <a class="btn btn-danger btn-lg" id="delete" type="button" data-postid= "<%= post._id %>" >delete</a>
         </div>
       </main>
@@ -32,7 +32,7 @@
       console.log(postId)
       deletePost.onclick = async function (){
         // return console.log(this.dataset.id)
-        const request = await fetch(`/delete_post/${postId}`, {method:'DELETE'})
+        const request = await fetch(`/posts/delete_post/${postId}`, {method:'DELETE'})
       }
         const response =await request.json()
         if (request.status===true){
